@@ -1,0 +1,60 @@
+<template>
+	<div class="container__details" v-if="$route.name === 'eventDetails'">
+        <router-view :events="events"></router-view>
+		<button class="btn" @click="getBack">Get back?</button>
+	</div>
+	<div v-else>
+        <div>
+            <h1>All events that u can choose!</h1>
+            <div class="container__card">
+                <EventCard
+                    v-for=" event in events"
+                    :key="event.id"
+                    :event="event">
+                </EventCard>
+            </div>
+        </div>
+	</div>
+</template>
+
+<script>
+import store from '../mocks/store'
+import EventCard from '../components/EventCard'
+
+export default {
+    name: 'EventsList',
+    components: {
+        EventCard,
+    },
+    data() {
+        return {
+            events: store.events
+        }
+    },
+	methods: {
+		getBack() {
+			this.$router.back();
+		}
+	},
+}
+</script>
+
+<style scoped>
+.container__details {
+  max-width: 500px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+}
+.container__card {
+    display: flex;
+    flex-wrap: wrap;
+}
+h1 {
+    text-align: center;
+    margin-top: 50px;
+}
+</style>
