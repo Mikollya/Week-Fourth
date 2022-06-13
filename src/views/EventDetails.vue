@@ -1,65 +1,74 @@
 <template>
-<div>
-    <div v-if="todoEvent" class="event__details">
-        <div class="event__id"><h1>Event</h1>{{"#"+todoEvent.id}}</div>
-        <div class="event__title" >{{" " +todoEvent.title}}</div>
-        <div><span>To do:</span>{{" " +todoEvent.description}}</div>
-        <div><span>Where: </span>{{" " +todoEvent.location }}</div>
-        <div><span>When: </span>{{" " +todoEvent.date }}</div>
-        <div><span>Time:</span>{{" " +todoEvent.time }}</div>
-        <div><span>Organizer:</span>{{" " +todoEvent.organizer}}</div>
-        <div><span>Category:</span>{{" " +todoEvent.category}}</div>
-        <div><span>Attendees:</span>{{" " + attendees()}}</div>
-    </div>
+  <div
+    v-if="targetEvent"
+    class="event__details"
+  >
+    <div class="event__id"><h1>Event</h1>{{ '#' + targetEvent.id }}</div>
+    <div class="event__title">{{ ' ' + targetEvent.title }}</div>
+    <div><span>To do:</span>{{ ' ' + targetEvent.description }}</div>
+    <div><span>Where: </span>{{ ' ' + targetEvent.location }}</div>
+    <div><span>When: </span>{{ ' ' + targetEvent.date }}</div>
+    <div><span>Time:</span>{{ ' ' + targetEvent.time }}</div>
+    <div><span>Organizer:</span>{{ ' ' + targetEvent.organizer }}</div>
+    <div><span>Category:</span>{{ ' ' + targetEvent.category }}</div>
+    <div><span>Attendees:</span>{{ ' ' + attendees() }}</div>
   </div>
-  
 </template>
 
 <script>
-import store from '../mocks/store';
 export default {
-    name: "EventDetails",
-    props: {
-        id: String,
+  name: 'EventDetails',
+  props: {
+    id: String,
+    events: {
+      type: Array,
+      default: () => []
     },
-    data() {
-        return {
-            todoEvent: null,
-        }
+  },
+  data() {
+    return {
+      todoEvent: null,
+    };
+  },
+  computed: {
+    eventId() {
+      return Number(this.$route.params.id);
     },
-    created() {
-        const todoEvent = store.events.find(event => event.id == this.$route.params.id)
-        if (todoEvent) {
-            this.todoEvent = todoEvent
-        }
-    },
-    methods: {
-        attendees() {
-            return this.todoEvent.attendees.map((member) => member.name).join(', ')
-        }
+    targetEvent() {
+      return this.events.find(({ id }) => id === this.eventId)
     }
-}
+  },
+  methods: {
+    attendees() {
+      return this.targetEvent.attendees.map((member) => member.name).join(', ');
+    }
+  }
+};
 </script>
 
 <style scoped>
 .event__details {
-    align-content: center;
-    font-size: 18px;
+  align-content: center;
+  font-size: 18px;
 }
+
 span {
-    color: steelblue;
-    font-size: 20px;
+  color: steelblue;
+  font-size: 20px;
 }
+
 .btn {
-    margin-left: 0;
+  margin-left: 0;
 }
+
 .event__title {
-    text-align: center;
-    font-size: 26px;
+  text-align: center;
+  font-size: 26px;
 }
+
 .event__id {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 </style>
