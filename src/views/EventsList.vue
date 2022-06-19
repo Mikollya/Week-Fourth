@@ -1,14 +1,11 @@
 <template>
   <div
     class="container__details"
-    v-if="$route.name === 'eventDetails'"
-  >
+    v-if="$route.name === 'eventDetails'">
     <router-view :events="events" />
-
     <button
       class="btn"
-      @click="getBack"
-    >
+      @click="getBack">
       Get back
     </button>
   </div>
@@ -16,10 +13,9 @@
   <div v-else>
     <div>
       <h1>All events that u can choose!</h1>
-
       <div class="container__card">
         <EventCard
-          v-for=" event in events"
+          v-for=" event in eventsList"
           :key="event.id"
           :event="event"
         />
@@ -29,7 +25,7 @@
 </template>
 
 <script>
-import store from '../mocks/store';
+import { mapGetters } from 'vuex';
 import EventCard from '../components/EventCard';
 
 export default {
@@ -37,16 +33,14 @@ export default {
   components: {
     EventCard,
   },
-  data() {
-    return {
-      events: store.events
-    };
-  },
   methods: {
     getBack() {
       this.$router.back();
     }
   },
+  computed: {
+		...mapGetters( ['eventsList'])
+	},
 };
 </script>
 

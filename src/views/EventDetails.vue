@@ -1,8 +1,6 @@
 <template>
   <div
-    v-if="targetEvent"
-    class="event__details"
-  >
+    v-if="targetEvent" class="event__details">
     <div class="event__id"><h1>Event</h1>{{ '#' + targetEvent.id }}</div>
     <div class="event__title">{{ ' ' + targetEvent.title }}</div>
     <div><span>To do:</span>{{ ' ' + targetEvent.description }}</div>
@@ -16,31 +14,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'EventDetails',
   props: {
     id: String,
-    events: {
-      type: Array,
-      default: () => []
-    },
-  },
-  data() {
-    return {
-      todoEvent: null,
-    };
   },
   computed: {
-    eventId() {
-      return Number(this.$route.params.id);
-    },
-    targetEvent() {
-      return this.events.find(({ id }) => id === this.eventId)
-    }
+    ...mapGetters(['currentEvent']),
+		targetEvent() {
+			return this.currentEvent(this.id);
+		},
   },
   methods: {
     attendees() {
-      return this.targetEvent.attendees.map((member) => member.name).join(', ');
+      return this.currentEvent && this.targetEvent.attendees.map((member) => member.name).join(', ');
     }
   }
 };
@@ -51,21 +39,17 @@ export default {
   align-content: center;
   font-size: 18px;
 }
-
 span {
   color: steelblue;
   font-size: 20px;
 }
-
 .btn {
   margin-left: 0;
 }
-
 .event__title {
   text-align: center;
   font-size: 26px;
 }
-
 .event__id {
   display: flex;
   flex-wrap: nowrap;

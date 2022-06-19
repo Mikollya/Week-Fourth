@@ -7,15 +7,24 @@
     <div><span>What we will do: </span>{{ ' ' + event.description }}</div>
     <div><span>Where: </span>{{ ' ' + event.location }}</div>
     <div><span>When: </span>{{ ' ' + event.date }}</div>
-    <button
-      class="btn"
-      @click="detailsRoute"
-    > details
-    </button>
+    <div class="EventCard__buttons">
+      <button
+        class="btn"
+        @click="detailsRoute"
+      > Details
+      </button>
+      <button
+        class="btn"
+        @click="deleteSelectedEvent"
+      > Delete
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   props: {
     event: Object
@@ -24,6 +33,10 @@ export default {
     detailsRoute() {
       this.$router.push({ name: 'eventDetails', params: { id: this.event.id } });
     },
+    ...mapActions(['deleteEvent']),
+    deleteSelectedEvent() {
+			this.deleteEvent(this.event.id);
+		},
   },
 };
 
@@ -46,10 +59,15 @@ export default {
   font-size: 28px;
   justify-content: space-evenly;
   margin-bottom: 10px;
+  width: 90%;
 }
-
+.EventCard__buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
 .btn {
-  margin-left: 0;
+  
+  margin: 25px 50px;
 }
 
 span {
