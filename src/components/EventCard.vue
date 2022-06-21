@@ -18,6 +18,7 @@
         @click="deleteSelectedEvent"
       > Delete
       </button>
+      
     </div>
   </div>
 </template>
@@ -26,14 +27,15 @@
 import { mapActions } from 'vuex';
 
 export default {
+  name: 'EventCard',
   props: {
     event: Object
   },
   methods: {
+    ...mapActions(['deleteEvent']),
     detailsRoute() {
       this.$router.push({ name: 'eventDetails', params: { id: this.event.id } });
     },
-    ...mapActions(['deleteEvent']),
     deleteSelectedEvent() {
 			this.deleteEvent(this.event.id);
 		},

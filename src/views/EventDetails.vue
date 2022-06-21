@@ -1,36 +1,44 @@
 <template>
-  <div
-    v-if="targetEvent" class="event__details">
-    <div class="event__id"><h1>Event</h1>{{ '#' + targetEvent.id }}</div>
-    <div class="event__title">{{ ' ' + targetEvent.title }}</div>
-    <div><span>To do:</span>{{ ' ' + targetEvent.description }}</div>
-    <div><span>Where: </span>{{ ' ' + targetEvent.location }}</div>
-    <div><span>When: </span>{{ ' ' + targetEvent.date }}</div>
-    <div><span>Time:</span>{{ ' ' + targetEvent.time }}</div>
-    <div><span>Organizer:</span>{{ ' ' + targetEvent.organizer }}</div>
-    <div><span>Category:</span>{{ ' ' + targetEvent.category }}</div>
+  <div v-if="eventDetails" class="event__details">
+    <div class="event__id"><h1>Event</h1>{{ '#' + eventDetails.id }}</div>
+    <div class="event__title">{{ ' ' + eventDetails.title }}</div>
+    <div><span>To do:</span>{{ ' ' + eventDetails.description }}</div>
+    <div><span>Where: </span>{{ ' ' + eventDetails.location }}</div>
+    <div><span>When: </span>{{ ' ' + eventDetails.date }}</div>
+    <div><span>Time:</span>{{ ' ' + eventDetails.time }}</div>
+    <div><span>Organizer:</span>{{ ' ' + eventDetails.organizer }}</div>
+    <div><span>Category:</span>{{ ' ' + eventDetails.category }}</div>
     <div><span>Attendees:</span>{{ ' ' + attendees() }}</div>
+    <button
+      class="btn"
+      @click="editRoute"> 
+      Update
+      </button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'EventDetails',
   props: {
     id: String,
   },
   computed: {
-    ...mapGetters(['currentEvent']),
-		targetEvent() {
-			return this.currentEvent(this.id);
-		},
+    ...mapGetters(['eventDetails'])
   },
   methods: {
+    ...mapActions(['fetchEventDetails']),
     attendees() {
-      return this.currentEvent && this.targetEvent.attendees.map((member) => member.name).join(', ');
-    }
-  }
+      return this.eventDetails && this.eventDetails.attendees.map((member) => member.name).join(', ');
+    },
+    editRoute() {
+      this.$router.push({ name: 'editDetails', params: { id: this.id } });
+    },
+  },
+  mounted() {
+		this.fetchEventDetails(this.id);
+	},
 };
 </script>
 
@@ -43,9 +51,7 @@ span {
   color: steelblue;
   font-size: 20px;
 }
-.btn {
-  margin-left: 0;
-}
+
 .event__title {
   text-align: center;
   font-size: 26px;

@@ -3,6 +3,7 @@ import EventsList from '../views/EventsList';
 import EventDetails from '../views/EventDetails';
 import CreateCard from '../views/CreateCard';
 import NotFound from '../views/NotFound';
+import EditEventDetails from '../views/EditEventDetails'
 
 import {
   createRouter,
@@ -34,11 +35,16 @@ const router = createRouter({
         },
       ],
     },
-
     {
       path: '/create',
       name: 'createEvent',
       component: CreateCard,
+    },
+    {
+      path: '/edit',
+      name: 'editDetails',
+      component: EditEventDetails,
+      props: true,
     },
     {
       path: '/:pathMatch(.*)*',
