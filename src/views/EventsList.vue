@@ -6,7 +6,7 @@
     <div v-else>
       <div v-if="$route.name === 'eventDetails'"
         class="container__details">
-        <router-view :events="events" />
+        <router-view />
         <button
           class="btn"
           @click="getBack">
@@ -27,13 +27,15 @@
               <button
                 :disabled="isPrevPageDisabled"
                 @click="prevPage"
-                class="btn">
+                :class="isPrevPageDisabled ? 'buttons_none' : 'btn'"
+                >
                 Prev
               </button>
               <button
                 :disabled="isNextPageDisabled"
                 @click="nextPage"
-                class="btn">
+                :class="isNextPageDisabled ? 'buttons_none' : 'btn'"
+                >
                 Next
               </button>
             </div>
@@ -57,9 +59,7 @@ export default {
   methods: {
     ...mapActions(['fetchEventsList']),
     getBack() {
-      //this.$router.push({ name: 'eventsList' });
-      this.$router.back();
-      this.$router.go(-1);
+      this.$router.replace({ name: 'eventsList' });
     },
     nextPage() {
 			this.currentPage += 1;
@@ -73,25 +73,42 @@ export default {
   computed: {
 		...mapGetters( ['eventsList', 'toggleLoading', 'totalEvents']),
     isPrevPageDisabled() {
-			return this.currentPage === 1;
+      if (this.currentPage === 1) {
+        return true
+      }
+      else {
+        return false
+      }
 		},
-		isNextPageDisabled() {
-			return this.currentPage === Math.ceil(this.totalEvents / this.perPage);
+    isNextPageDisabled() {
+      if (this.currentPage === Math.ceil(this.totalEvents / this.perPage)) {
+        return true
+      }
+      else {
+        return false
+      }
 		}
-	},
-  mounted() {
-    this.fetchEventsList({perPage: this.perPage, currentPage: this.currentPage })
 	},
 	data() {
 		return {
 			perPage: 3,
 			currentPage: 1,
 		};
-	},
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.fetchEventsList({ perPage: this.perPage, currentPage: this.currentPage })
+      },
+      { immediate: true }
+    )
+  },
 };
 </script>
 
 <style scoped>
+
 .container__details {
   max-width: 500px;
   margin: 30px auto;
@@ -115,5 +132,8 @@ h1 {
   display: flex;
   justify-content: space-evenly;
   margin: 20px 0;
+}
+.buttons_none {
+  display: none;
 }
 </style>
