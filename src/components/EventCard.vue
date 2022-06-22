@@ -1,32 +1,52 @@
 <template>
-  <div class="card__container">
-    <div class="card__title">
-        <div>{{"№"+event.id }}</div>
-        <div>{{ " " +event.title }}</div>
+  <div class="EventCard__container">
+    <div class="EventCard__title">
+      <div>{{ '№' + event.id }}</div>
+      <div>{{ ' ' + event.title }}</div>
     </div>
-    <div><span>What we will do: </span>{{" " + event.description }}</div>
-    <div><span>Where: </span>{{" " +event.location }}</div>
-    <div><span>When: </span>{{ " " + event.date }}</div>
-    <button class="btn" @click="detailsRoute"> details </button>
+    <div><span>What we will do: </span>{{ ' ' + event.description }}</div>
+    <div><span>Where: </span>{{ ' ' + event.location }}</div>
+    <div><span>When: </span>{{ ' ' + event.date }}</div>
+    <div class="EventCard__buttons">
+      <button
+        class="btn"
+        @click="detailsRoute"
+      > Details
+      </button>
+      <button
+        class="btn"
+        @click="deleteSelectedEvent"
+      > Delete
+      </button>
+      
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
+  name: 'EventCard',
   props: {
     event: Object
   },
   methods: {
+    ...mapActions(['deleteEvent']),
     detailsRoute() {
-      this.$router.push({ name: "eventDetails", params: { id: this.event.id }});
+      this.$router.push({ name: 'eventDetails', params: { id: this.event.id } });
     },
+    deleteSelectedEvent() {
+			this.deleteEvent(this.event.id);
+		},
   },
-}
+};
 
 </script>
 
 <style scoped>
-.card__container {
+.EventCard__container {
+  width: 100%;
   max-width: 500px;
   margin: 30px auto;
   overflow: auto;
@@ -35,17 +55,25 @@ export default {
   padding: 30px;
   border-radius: 5px;
 }
+
+.EventCard__title {
+  display: flex;
+  font-size: 28px;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  width: 90%;
+}
+.EventCard__buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
 .btn {
-    margin-left: 0;
+  
+  margin: 25px 50px;
 }
+
 span {
-    color: steelblue;
-    font-size: 20px;
-}
-.card__title {
-    display: flex;
-    font-size: 28px;
-    justify-content: space-evenly;
-    margin-bottom: 10px;
+  color: steelblue;
+  font-size: 20px;
 }
 </style>

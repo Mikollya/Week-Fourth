@@ -30,13 +30,13 @@
     },
     {
       "id": 2,
-      "title": "Park Cleanup",
+      "title": "Park d",
       "date": "Nov 12 2018",
       "time": "12:00",
       "location": "132 N Magnolia Street, Orlando, Florida",
       "description": "We're going to clean up this park.",
       "organizer": "Adam Jahr",
-      "category": "nature",
+      "category": "naturer",
       "attendees": [
         {
           "id": "ghi789",
@@ -50,7 +50,7 @@
     },
     {
       "id": 3,
-      "title": "Pet Adoption Day",
+      "title": "Pet Adoption Dayss",
       "date": "Dec 2 2018",
       "time": "12:00",
       "location": "132 N Magnolia Street, Orlando, Florida",
@@ -231,6 +231,19 @@
       "date": "",
       "time": "5:00",
       "attendees": []
+    },
+    {
+      "id": 11,
+      "title": "",
+      "date": "",
+      "time": "",
+      "location": "",
+      "description": "",
+      "organizer": "",
+      "category": "",
+      "attendees": [
+        {}
+      ]
     }
   ]
 }

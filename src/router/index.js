@@ -1,48 +1,57 @@
-import Home from '../views/Home'
-import EventsList from '../views/EventsList'
-import EventDetails from '../views/EventDetails'
-import CreateCard from '../views/CreateCard'
-import NotFound from '../views/NotFound'
+import PageHome from '../views/PageHome';
+import EventsList from '../views/EventsList';
+import EventDetails from '../views/EventDetails';
+import CreateCard from '../views/CreateCard';
+import NotFound from '../views/NotFound';
+import EditEventDetails from '../views/EditEventDetails'
 
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory
+} from 'vue-router';
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes: [
-                {
-                    path: '/',
-                    name: 'home',
-                    component: Home
-                },
-                {
-                    path: '/events',
-                    name: 'eventsList',
-                    component: EventsList,
-                    children: [
-                        {
-                          path: ':id',
-                          name: 'eventDetails',
-                          component: EventDetails,
-                          props: true,
-                        },
-                        {
-                            path: '*/*',
-                            redirect: { name: 'eventsList' }
-                        },
-                      ],
-                },
-                
-                {
-                    path: "/create",
-                    name: "createEvent",
-                    component: CreateCard,
-                },
-                {
-                    path: '/:pathMatch(.*)*',
-                    name: 'notFound',
-                    component: NotFound
-                },
-            ]
-})
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: PageHome
+    },
+    {
+      path: '/events',
+      name: 'eventsList',
+      component: EventsList,
+      children: [
+        {
+          path: ':id',
+          name: 'eventDetails',
+          component: EventDetails,
+          props: true,
+        },
+        {
+          path: '*/*',
+          redirect: { name: 'eventsList' }
+        },
+      ],
+    },
+    {
+      path: '/create',
+      name: 'createEvent',
+      component: CreateCard,
+    },
+    {
+      path: '/edit',
+      name: 'editDetails',
+      component: EditEventDetails,
+      props: true,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: NotFound
+    },
+  ]
+});
 
 export default router;
